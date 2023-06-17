@@ -1,0 +1,214 @@
+<style>
+@font-face {
+    font-family: oldStyleFont;
+    src: url(oldStyleFont.TTF) format("truetype");
+}
+
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'oldStyleFont';
+    font-size: 28px;
+    line-height: 1.4rem;
+    height: 100%;
+    padding: .5rem;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: auto;
+     -webkit-font-smoothing: antialiased;
+             font-smoothing: antialiased;
+    font-kerning: normal;
+    color: #ffffff;
+}
+
+body{
+		background-image: url('bg/bg1.jpg');
+		background-size:cover;
+        -webkit-animation: slidein 45s;
+        animation: slidein 45s;
+
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+
+        -webkit-animation-direction: alternate;
+        animation-direction: alternate;
+	
+  height: 100%;
+}
+
+p {
+    line-height: 2em;
+}
+
+.quote--container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+
+@-webkit-keyframes slidein {
+from {background-position: top; background-size:3000px; }
+to {background-position: -100px 0px;background-size:2750px;}
+}
+
+@keyframes slidein {
+from {background-position: top;background-size:3000px; }
+to {background-position: -100px 0px;background-size:2750px;}
+
+}
+
+.center
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(75, 75, 250, 0.3);
+  border-radius: 3px;
+}
+.center h1{
+  text-align:center;
+  color:white;
+  font-family: 'Source Code Pro', monospace;
+  text-transform:uppercase;
+}
+
+</style>
+<body onload="initialQuotes();" id="myBody">
+<div class="quote--container">
+    <p class="quote" id="myQuote">
+        text will go here.
+    </p>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+const quotes = [
+	"Life goes on,<br>with or without<br>whoever and whatever.",
+	"Life is a journey to be experienced<br>not a problem to be solved.",
+	"Sometimes you win because you don't play.",
+	"You may delay<br>but time will not.",
+	"Stop expecting YOU from other people.",
+	"You are always responsible for how you act,<br>no matter how you feel.",
+	"We are so busy<br>capturing and preserving moments,<br>that we often forget to live them.",
+	"If you want to feed the homeless<br>then feed the homeless.<br>But when you put it on social media,<br>you're also feeding your ego.",
+	"Once you care<br>you're<br>FUCKED.",
+	"Learn to spend more time with yourself<br>without feeling guilty about it.",
+	"A simple truth?<br>We will never<br>have today<br>again.",
+	"Don't rush the process.<br>Good things take time.",
+	"Nothing will make you more productive than owning your time.<br>Nothing will make you less productive than selling it.",
+	"When you really pay attention,<br>everything is your teacher.",
+	"What a strange world.<br>We trade our days<br>for things.",
+	"Sturgeon's law: \"Ninety percent of everything is crap.\"",
+	"The art of knowing<br>is knowing what to ignore.",
+	"Once you carry your own water,<br>you will value every drop.",
+	"Leaving your home and getting back safely<br>is such an underrated blessing.",
+	"Don't believe<br>everything you think.",
+	"The key to happiness<br>is low expectations.",
+	"Time is precious,<br>don't waste it.",
+	"We will never be this young again."
+	];
+	
+	const keysList = [13, 16, 32, 37, 38, 39, 40];
+	
+	const bgList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+	
+	var quoteCounter=0;
+	var bgCounter=0;
+	
+function initialQuotes(){
+	shuffle(quotes);
+	shuffle(bgList);
+	document.getElementById("myQuote").innerHTML=quotes[quoteCounter];
+	quoteCounter++;
+	changePicture();
+	
+}
+
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+
+function changePicture(){
+    if(bgCounter==(bgList.length-1)){
+		shuffle(bgList);
+		bgCounter=0;
+	}
+		var bgUrl="url(bg/bg"+bgList[bgCounter]+".jpg)";
+		document.body.style.backgroundImage = bgUrl;
+		bgCounter++;
+}
+
+document.addEventListener('swiped', function(e) {
+    console.log(e.target); // the element that was swiped
+    console.log(e.detail.dir); // swiped direction
+});
+
+var elem = $("#myQuote");
+
+function change() {
+		if(quoteCounter==(quotes.length-1)){
+			shuffle(quotes);
+			quoteCounter=0;
+		}
+			elem.fadeOut(function(){
+			elem.html(quotes[quoteCounter]);
+			elem.fadeIn();
+			});
+			quoteCounter++;
+			changePicture();
+}
+
+
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+
+                                                             
+function handleTouchStart(evt) {
+    change();                                     
+};                                                
+                                                                         
+function handleTouchMove(evt) {
+    change();                                  
+};
+
+document.body.addEventListener("click", function (evt) {
+    change();
+});
+
+$(window).keydown(function(event){
+    if (keysList.includes(event.keyCode)){
+		change();
+	}
+});
+</script>
+</body>
