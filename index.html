@@ -38,6 +38,8 @@ body{
 
         -webkit-animation-direction: alternate;
         animation-direction: alternate;
+		
+		object-fit: cover;
 	
   height: 100%;
 }
@@ -129,6 +131,7 @@ const quotes = [
 	
 	var quoteCounter=0;
 	var bgCounter=0;
+	var touch=false;
 	
 function initialQuotes(){
 	shuffle(quotes);
@@ -168,10 +171,6 @@ function changePicture(){
 		bgCounter++;
 }
 
-document.addEventListener('swiped', function(e) {
-    console.log(e.target); // the element that was swiped
-    console.log(e.detail.dir); // swiped direction
-});
 
 var elem = $("#myQuote");
 
@@ -189,20 +188,22 @@ function change() {
 }
 
 
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchstart', handleTouchStart, false);    
+
 
                                                              
 function handleTouchStart(evt) {
-    change();                                     
+		change();
+		touch=true;
 };                                                
                                                                          
-function handleTouchMove(evt) {
-    change();                                  
-};
+
 
 document.body.addEventListener("click", function (evt) {
-    change();
+    if(touch==false){
+		change();
+	}
+	touch=false;
 });
 
 $(window).keydown(function(event){
